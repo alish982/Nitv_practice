@@ -1,0 +1,120 @@
+'use client'
+
+import { useState } from "react";
+import Link from 'next/link';
+import {useRouter} from 'next/navigation';
+import { useFormik } from "formik";
+import type { NextPage } from "next";
+import * as yup from "yup";
+// import { setAccessToken } from '.../lib/setAccessToken';
+
+
+import "bootstrap/dist/css/bootstrap.min.css";
+
+const Home: NextPage = () => {
+  const [message, setMessage] = useState(""); // This will be used to show a message if the submission is successful
+  const [submitted, setSubmitted] = useState(false);
+  const [newKey, newValue] = useState({})
+  const [initialValue, setValue] = useState({
+    username: "jimmy@gmail.com",
+    password: "asdfghjkl",
+
+  });
+  const router = useRouter()
+
+  const formik = useFormik({
+    initialValues: initialValue,
+
+    onSubmit: async (values) => {
+      let formData = new FormData()
+       formData.append("username", values.username)
+       formData.append("password", values.password)
+       console.log(formData)
+      console.log(values)
+      const data = await fetch(
+        "https://nitvcrmapi.truestreamz.com/api/v1/user/login",
+        {
+          method: "POST",
+          body: formData,
+          
+        }
+      );
+      
+      router.push('/dashboard')
+
+      const res = await data.json();
+      console.log(res);
+      console.log(res.access_token)
+      localStorage.setItem("token_ho_yo", res.access_token)
+
+
+      setMessage(" ");
+      setSubmitted(true);
+
+    },
+    // validationSchema: yup.object({
+    //   username: yup
+    //     .string()
+    //     .email("Must be a valid email or username")
+    //     .required("Email is required"),
+    //   password: yup
+    //     .string()
+    //     .trim()
+    //     .required("please enter the password")
+        
+    // }),
+  });
+
+  return (
+    <div className="vh-100 d-flex flex-column justify-content-center align-items-center">
+        <label htmlFor = "register " className = 'form-label font-bold '>Login</label>
+      <div hidden={!submitted} className="alert alert-primary" role="alert">
+        {message}
+      </div>
+
+      <form className="w-50 " onSubmit={formik.handleSubmit}>
+        <div className="mb-3">
+        <div className="mb-3">
+          <label htmlFor="username" className="form-label">
+            Email or Username
+          </label>
+
+          <input
+            type="username"
+            name="username"
+            className="form-control"
+            placeholder=""
+            value={formik.values.username}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.errors.username && (
+            <div className="text-danger">{formik.errors.username}</div>
+          )}
+        </div>
+
+          <label htmlFor="password" className="form-label">
+            password
+          </label>
+          <input
+            type="password"
+            name="password"
+            className="form-control"
+            value = {formik.values.password}
+            placeholder=""
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+        </div>
+        <button type="submit" className="btn btn-primary">
+          Login
+        </button><br></br><br></br>
+        <Link href ="/" className = "btn btn-primary">Back to Register</Link>
+
+      </form>
+</div>
+
+  );
+};
+
+export default Home;
