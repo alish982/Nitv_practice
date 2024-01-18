@@ -1,21 +1,56 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import LocalStorage from "../localStorage";
 
-const dashboard = async () => {
-  const data = await fetch(
-    "https://nitvcrmapi.truestreamz.com/api/v1/dashboard/plan_summary",
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token_ho_yo")}`,
+function dashboard() {
+  const [data, setData] = useState(null)
+  const [Loading, setLoading] = useState({})
+  // const data = await fetch(
+  //   "https://nitvcrmapi.truestreamz.com/api/v1/dashboard/plan_summary",
+  //   {
+  //     method: "POST",
+  //     headers: {
+  //       'Authorization': `Bearer ${<LocalStorage />}`,
+  //     },
+  //   }
+  // );
+
+    useEffect(() => {
+      console.log(LocalStorage)
+    fetch('https://nitvcrmapi.truestreamz.com/api/v1/dashboard/plan_summary',{
+      method: "GET",
+      hearders: {
+        'Authorization': `Bearer ${<LocalStorage />}`,
       },
-    }
-  );
-  const res = await data.json();
-  console.log(res);
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setData(data)
+        setLoading(false)
+      })
+  }, [])
+  
+  console.log(data)
+
+
+
+  // const subsData = await fetch("https://nitvcrmapi.truestreamz.com/api/v1/dashboard/subscription_summary",
+  // {
+  //   method:'POST',
+  //   headers: {
+  //     'Authorization': `Bearer ${<LocalStorage />}`,
+  //   }
+  // })
+  // const res = await data.json();
+  // console.log(res);
+  
+  // const sum_res = await subsData.json();
+  // console.log(sum_res)
+
 
   return (
+    
     <div className="flex flex-col px-20 py-20 ">
       <div className="-m-1.5 overflow-x-auto">
         <div className="p-1.5 min-w-full inline-block align-middle">
@@ -203,4 +238,4 @@ const dashboard = async () => {
   );
 };
 
-export default dashboard;
+export default dashboard

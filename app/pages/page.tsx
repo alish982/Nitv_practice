@@ -7,8 +7,6 @@ import { useFormik } from "formik";
 import type { NextPage } from "next";
 import * as yup from "yup";
 // import { setAccessToken } from '.../lib/setAccessToken';
-
-
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const Home: NextPage = () => {
@@ -29,8 +27,8 @@ const Home: NextPage = () => {
       let formData = new FormData()
        formData.append("username", values.username)
        formData.append("password", values.password)
-       console.log(formData)
-      console.log(values)
+      //console.log(formData)
+      //console.log(values)
       const data = await fetch(
         "https://nitvcrmapi.truestreamz.com/api/v1/user/login",
         {
@@ -43,10 +41,10 @@ const Home: NextPage = () => {
       router.push('/dashboard')
 
       const res = await data.json();
-      console.log(res);
-      //console.log(res.access_token)
+      //console.log(res);
+    
       localStorage.setItem("token_ho_yo", res.access_token)
-
+      
 
       setMessage(" ");
       setSubmitted(true);
