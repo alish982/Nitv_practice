@@ -44,7 +44,7 @@ const Home: NextPage = () => {
 
       const res = await data.json();
       console.log(res);
-      console.log(res.access_token)
+      //console.log(res.access_token)
       localStorage.setItem("token_ho_yo", res.access_token)
 
 
