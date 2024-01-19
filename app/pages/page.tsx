@@ -108,7 +108,7 @@ const Home: NextPage = () => {
         <button type="submit" className="btn btn-primary">
           Login <LoginRoundedIcon />
         </button><br></br><br></br>
-        <Link href ="/" className = "btn btn-primary"><ArrowBackRoundedIcon sx={{ color: #"111111" }}/>Back to Register</Link>
+        <Link href ="/" className = "btn btn-primary"><ArrowBackRoundedIcon />Back to Register</Link>
 
       </form>
 </div>
