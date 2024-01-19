@@ -1,11 +1,14 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import LocalStorage from "../localStorage";
+import { access_token } from "../localStorage";
+import axios from 'axios';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 function dashboard() {
-  const [data, setData] = useState(null)
-  const [Loading, setLoading] = useState({})
+  const [plan, setPlan] = useState([{'plan' : 'h'}])
+  const [subData, setSubData] = useState([{'subData' : 'a'}])
+
   // const data = await fetch(
   //   "https://nitvcrmapi.truestreamz.com/api/v1/dashboard/plan_summary",
   //   {
@@ -15,25 +18,33 @@ function dashboard() {
   //     },
   //   }
   // );
+  const test_it = async () => {
+    const response = await axios.get('https://nitvcrmapi.truestreamz.com/api/v1/dashboard/plan_summary', {
+      headers: {
+        'Authorization': `Bearer ${access_token}`,
+      }})
+    setPlan(response.data.data)
+    console.log(response.data.data)     
+    
+    const newresponse = await axios.get('https://nitvcrmapi.truestreamz.com/api/v1/dashboard/subscription_summary', {
+      headers: {
+        'Authorization': `Bearer ${access_token}`,
+      }})
+    setSubData(newresponse.data.data)
+    console.log(newresponse.data.data)
+  
+    }
 
     useEffect(() => {
-      console.log(LocalStorage)
-    fetch('https://nitvcrmapi.truestreamz.com/api/v1/dashboard/plan_summary',{
-      method: "GET",
-      hearders: {
-        'Authorization': `Bearer ${<LocalStorage />}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data)
-        setLoading(false)
-      })
-  }, [])
-  
-  console.log(data)
+      setPlan([{'plan':'s'}])
+      setSubData([{'subData': 'n'}])
+      console.log(plan)
+      console.log(subData)
+        test_it ()
+      
+  },[])
 
-
+  // console.log(subData)
 
   // const subsData = await fetch("https://nitvcrmapi.truestreamz.com/api/v1/dashboard/subscription_summary",
   // {
@@ -81,51 +92,26 @@ function dashboard() {
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                <tr>
+              <tbody>
+              { plan.map((post) => 
+                <tr key={post.key}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                    dummy
+                   {post.plan_name}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                    dummy
+                    {post.quantity}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                    dummy
+                    {post.amount}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-end text-sm font-medium"></td>
-                </tr>
-
-                <tr>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                    dummy
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                    dummy
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                    dummy
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-end text-sm font-medium"></td>
-                </tr>
-
-                <tr>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                    dummy
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                    dummy
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                    dummyk
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-end text-sm font-medium"></td>
-                </tr>
+                  </tr>
+    )}
               </tbody>
             </table>
 
             <br></br>
             <br></br>
-
+            
             <label className="text-2xl  text-gray-700  bg-slate-300 rounded uppercase font-mono px-6">
               Subscription Summary
             </label>
@@ -165,70 +151,36 @@ function dashboard() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                <tr>
+              { subData.map((post) =>
+            <tr key={post.key}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                    dummy
+                  {post.date}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                    dummy
+                  {post.signups} 
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                    dummy
+                    {post.activation}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                    dummyk
+                    {post.cancellations}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                    dummyk
+                    {post.customers}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-end text-sm font-medium"></td>
-                </tr>
-
-                <tr>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                    dummy
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                    dummy
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                    dummy
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                    dummyk
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                    dummyk
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-end text-sm font-medium"></td>
-                </tr>
-
-                <tr>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
-                    dummy
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                    dummy
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                    dummyk
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                    dummyk
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
-                    dummyk
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-end text-sm font-medium"></td>
-                </tr>
+                </tr>    
+         
+      )}
               </tbody>
             </table>
+            <hr />
             <br></br>
             <Link
               href="/"
               className="text-xl px-3 rounded font-mono text-gray-700 bg-slate-200 inline-block "
             >
-              Back to Register
+              <ArrowBackIcon/>Back to Register
             </Link>
           </div>
         </div>

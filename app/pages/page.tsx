@@ -6,13 +6,14 @@ import {useRouter} from 'next/navigation';
 import { useFormik } from "formik";
 import type { NextPage } from "next";
 import * as yup from "yup";
-// import { setAccessToken } from '.../lib/setAccessToken';
 import "bootstrap/dist/css/bootstrap.min.css";
+import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
+import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
+
 
 const Home: NextPage = () => {
   const [message, setMessage] = useState(""); // This will be used to show a message if the submission is successful
   const [submitted, setSubmitted] = useState(false);
-  const [newKey, newValue] = useState({})
   const [initialValue, setValue] = useState({
     username: "jimmy@gmail.com",
     password: "asdfghjkl",
@@ -105,9 +106,9 @@ const Home: NextPage = () => {
           />
         </div>
         <button type="submit" className="btn btn-primary">
-          Login
+          Login <LoginRoundedIcon />
         </button><br></br><br></br>
-        <Link href ="/" className = "btn btn-primary">Back to Register</Link>
+        <Link href ="/" className = "btn btn-primary"><ArrowBackRoundedIcon sx={{ color: #"111111" }}/>Back to Register</Link>
 
       </form>
 </div>

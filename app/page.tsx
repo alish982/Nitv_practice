@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { useFormik } from "formik";
 import type { NextPage } from "next";
 import * as yup from "yup";
+import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
+import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -121,9 +123,9 @@ const Home: NextPage = () => {
         </div>
         
         <button type="submit" className="btn btn-primary">
-        Register
+        Register < LoginRoundedIcon/>
         </button><br></br><br></br>
-        Already have an account? <Link href ="/pages" className = "btn btn-primary ">Click here to Login</Link>
+        Already have an account? <Link href ="/pages" className = "btn btn-primary ">Click here to Login< ArrowForwardRoundedIcon/></Link>
           
       </form>
     </div>
