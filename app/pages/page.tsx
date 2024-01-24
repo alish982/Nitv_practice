@@ -5,18 +5,18 @@ import Link from 'next/link';
 import {useRouter} from 'next/navigation';
 import { useFormik } from "formik";
 import type { NextPage } from "next";
-import * as yup from "yup";
 import "bootstrap/dist/css/bootstrap.min.css";
 import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
+import { red } from '@mui/material/colors';
 
 
 const Home: NextPage = () => {
   const [message, setMessage] = useState(""); // This will be used to show a message if the submission is successful
   const [submitted, setSubmitted] = useState(false);
   const [initialValue, setValue] = useState({
-    username: "jimmy@gmail.com",
-    password: "asdfghjkl",
+    username: "",
+    password: "",
 
   });
   const router = useRouter()
@@ -39,7 +39,7 @@ const Home: NextPage = () => {
         }
       );
       
-      router.push('/dashboard')
+      router.push('/Component')
 
       const res = await data.json();
       //console.log(res);
@@ -51,17 +51,6 @@ const Home: NextPage = () => {
       setSubmitted(true);
 
     },
-    // validationSchema: yup.object({
-    //   username: yup
-    //     .string()
-    //     .email("Must be a valid email or username")
-    //     .required("Email is required"),
-    //   password: yup
-    //     .string()
-    //     .trim()
-    //     .required("please enter the password")
-        
-    // }),
   });
 
   return (
@@ -108,7 +97,7 @@ const Home: NextPage = () => {
         <button type="submit" className="btn btn-primary">
           Login <LoginRoundedIcon />
         </button><br></br><br></br>
-        <Link href ="/" className = "btn btn-primary"><ArrowBackRoundedIcon />Back to Register</Link>
+        <Link href ="/" className = "btn btn-primary"><ArrowBackRoundedIcon sx={{ color: red[500] }} />Back to Register</Link>
 
       </form>
 </div>

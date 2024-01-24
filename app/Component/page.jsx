@@ -1,23 +1,15 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState} from "react";
 import Link from "next/link";
 import { access_token } from "../localStorage";
 import axios from 'axios';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
+
 function dashboard() {
   const [plan, setPlan] = useState([{'plan' : 'h'}])
-  const [subData, setSubData] = useState([{'subData' : 'a'}])
+  const [subData, setSubData] = useState([])
 
-  // const data = await fetch(
-  //   "https://nitvcrmapi.truestreamz.com/api/v1/dashboard/plan_summary",
-  //   {
-  //     method: "POST",
-  //     headers: {
-  //       'Authorization': `Bearer ${<LocalStorage />}`,
-  //     },
-  //   }
-  // );
   const test_it = async () => {
     const response = await axios.get('https://nitvcrmapi.truestreamz.com/api/v1/dashboard/plan_summary', {
       headers: {
@@ -40,28 +32,10 @@ function dashboard() {
       setSubData([{'subData': 'n'}])
       console.log(plan)
       console.log(subData)
-        test_it ()
-      
+        test_it ()      
   },[])
 
-  // console.log(subData)
-
-  // const subsData = await fetch("https://nitvcrmapi.truestreamz.com/api/v1/dashboard/subscription_summary",
-  // {
-  //   method:'POST',
-  //   headers: {
-  //     'Authorization': `Bearer ${<LocalStorage />}`,
-  //   }
-  // })
-  // const res = await data.json();
-  // console.log(res);
-  
-  // const sum_res = await subsData.json();
-  // console.log(sum_res)
-
-
   return (
-    
     <div className="flex flex-col px-20 py-20 ">
       <div className="-m-1.5 overflow-x-auto">
         <div className="p-1.5 min-w-full inline-block align-middle">
@@ -173,7 +147,7 @@ function dashboard() {
          
       )}
               </tbody>
-            </table>
+              </table>
             <hr />
             <br></br>
             <Link
@@ -181,6 +155,10 @@ function dashboard() {
               className="text-xl px-3 rounded font-mono text-gray-700 bg-slate-200 inline-block "
             >
               <ArrowBackIcon/>Back to Register
+            </Link><br></br><br></br>
+            <Link
+              className = "bg-slate-300 inline-block text-l border-2 p-2 mb-2 rounded-md justify-end " href = '/user'>
+                Users Details
             </Link>
           </div>
         </div>
@@ -188,6 +166,6 @@ function dashboard() {
       <br></br>
     </div>
   );
-};
+}
 
 export default dashboard

@@ -1,19 +1,16 @@
 'use client'
-
+import Link from 'next/link'
 import { useState } from "react";
-import Link from 'next/link';
 import { useFormik } from "formik";
 import type { NextPage } from "next";
-import * as yup from "yup";
-import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
+import { Validation } from '../app/login/validation'
 import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
-
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import "bootstrap/dist/css/bootstrap.min.css";
 
+
 const Home: NextPage = () => {
-  const [message, setMessage] = useState(""); // This will be used to show a message if the submission is successful
   const [submitted, setSubmitted] = useState(false);
- // const [err, setErr] = useState({})
   const [initialValue, setValue] = useState({
     user_type: "",
     email: "",
@@ -21,7 +18,7 @@ const Home: NextPage = () => {
     password: "",
   });
 
-  const formik = useFormik({
+ const formik = useFormik({
     initialValues: initialValue,
 
     onSubmit: async (values) => {
@@ -37,31 +34,15 @@ const Home: NextPage = () => {
       );
 
       const res = await data.json();
-      console.log(res);
-      
-
-      setMessage("form submitted",);
-      setSubmitted(true);
     },
-    validationSchema: yup.object({
-      name: yup.string().trim().required("Name is required"),
-      email: yup
-        .string()
-        .email("Must be a valid email")
-        .required("Email is required"),
-      password: yup
-        .string()
-        .trim()
-        .required("please enter the password")
-        .min(6, "your password must be 6 character long"),
-    }),
-  });
 
+  });
+  {Validation}
   return (
+    
     <div className="vh-100 d-flex flex-column justify-content-center align-items-center">
         <label htmlFor = "register " className = 'form-label font-bold '>Register</label>
       <div hidden={!submitted} className="alert alert-primary" role="alert">
-        {message}
       </div>
 
       <form className="w-50 " onSubmit={formik.handleSubmit}>
@@ -125,11 +106,11 @@ const Home: NextPage = () => {
         <button type="submit" className="btn btn-primary">
         Register < LoginRoundedIcon/>
         </button><br></br><br></br>
-        Already have an account? <Link href ="/pages" className = "btn btn-primary ">Click here to Login< ArrowForwardRoundedIcon/></Link>
+        Already have an account? <Link href ="/pages" className = "btn btn-primary ">Click here to Login <ArrowForwardIcon /></Link>
           
       </form>
     </div>
   );
-};
+}; 
 
 export default Home;
