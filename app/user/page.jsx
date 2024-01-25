@@ -7,31 +7,21 @@ import Pagination from '../pagination/page'
 
 function UserDetails({}){
 
-  // const handleClick = async () => {
-  //   await axios.get(`https://nitvcrmapi.truestreamz.com/api/v1/user/${post.id}`, {
-  //      method: "DELETE",
-  //    headers: {
-  //      'Authorization': `Bearer ${access_token}`,
-  //    }})  
-  //  }
-
-    const [plan, setPlan] = useState([{'plan' : 'h'}])
-
+    const [user, setUser] = useState([])
     const test_it = async () => {
-        const response = await axios.get('https://nitvcrmapi.truestreamz.com/api/v1/user', {
-            method: "GET",
-          headers: {
-            'Authorization': `Bearer ${access_token}`,
-          }})
-        setPlan(response.data.data.items)    
+      await axios.get('https://nitvcrmapi.truestreamz.com/api/v1/user', {
+        method: "GET",
+        headers: {
+          'Authorization': `Bearer ${access_token}`,
         }
-        useEffect(() => {
-            setPlan([{'plan':'s'}])
-            console.log(plan)
-              test_it ()
-            
-        },[])
-
+      }).then((response) => {
+        setUser(response.data.data.items)    
+        // response.status === 200 ? alert ("hello") : null
+      })
+    }
+    useEffect(() => {
+      test_it ()
+    },[])
          
     return(
       <div className="flex flex-col px-20 py-20 ">
@@ -84,7 +74,7 @@ function UserDetails({}){
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-              { plan.map((post) =>
+              { user.map((post) =>
                 <tr key={post.id}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200">
                   {post.user_type}
@@ -107,8 +97,7 @@ function UserDetails({}){
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200">
                   <button
                     onClick = { async () => {
-                      await axios.get(`https://nitvcrmapi.truestreamz.com/api/v1/user/${post.id}`, {
-                       method: "DELETE",
+                      await axios.delete(`https://nitvcrmapi.truestreamz.com/api/v1/customer/${post.id}`, {
                        headers: {
                       'Authorization': `Bearer ${access_token}`,
                       }})  
@@ -122,7 +111,7 @@ function UserDetails({}){
                 )}
               </tbody>
              </div><br></br>
-             <Pagination />
+             <Pagination setUser = {setUser} pagePegi = {perpage}  />
              <Link
               className = "bg-slate-300 inline-block text-l border-2 p-2 mb-2 rounded-md justify-end " href = '/'>
                 Back to Register
@@ -130,10 +119,9 @@ function UserDetails({}){
            
            </div>
         </div>
-        
     </div>
     
     )
 }
 
-export default UserDetails
+export default UserDetails;

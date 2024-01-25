@@ -33,7 +33,7 @@ function dashboard() {
       console.log(plan)
       console.log(subData)
         test_it ()      
-  },[])
+  },[])   
 
   return (
     <div className="flex flex-col px-20 py-20 ">

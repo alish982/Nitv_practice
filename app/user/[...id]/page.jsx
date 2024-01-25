@@ -13,7 +13,7 @@ function Page({ params }) {
     user_type: "" ,
     email: "",
     name: "",
-    password: "",
+    company: "",
   });
 
   const test_it = async () => {
@@ -62,7 +62,7 @@ function Page({ params }) {
                             onChange={(newVal) => {
                             console.log(newVal.target.value)
                             formik.setFieldValue('user_type',newVal.target.value)
-                            setValue((currVal) => {
+                            setInitialValue((currVal) => {
                             currVal.user_type = newVal.target.value
                               return currVal
                              })
@@ -85,8 +85,8 @@ function Page({ params }) {
             value={initialValue.name}
             onChange={(newVal) => {
               console.log(newVal.target.value)
-              formik.setFieldValue('name',newVal.target.value)
-              setValue((currVal) => {
+              formik.setFieldValue("name", newVal.target.value)
+              setInitialValue((currVal) => {
                 currVal.name = newVal.target.value
                 return currVal
               })
@@ -114,12 +114,37 @@ function Page({ params }) {
             onChange={(newVal) => {
               console.log(newVal.target.value)
               formik.setFieldValue('email',newVal.target.value)
-              setValue((currVal) => {
+              setInitialValue((currVal) => {
                 currVal.email = newVal.target.value
                 return currVal
-                console.log(formik.setFieldValue)
+               
               })
-              console.log(values.fields[0])
+             
+              //console.log(newVal.target.value);
+            }}
+            onBlur={formik.handleBlur}
+          />
+
+<label htmlFor="email" className="form-label">
+            Company
+          </label>
+           
+          <input
+            type="text"
+            name="company"
+            className="form-control"
+            placeholder=""
+            value={initialValue.company}
+            //onChange={formik.handleChange}
+            onChange={(newVal) => {
+              console.log(newVal.target.value)
+              formik.setFieldValue('company',newVal.target.value)
+              setInitialValue((currVal) => {
+                currVal.company = newVal.target.value
+                return currVal
+                
+              })
+             
               //console.log(newVal.target.value);
             }}
             onBlur={formik.handleBlur}
