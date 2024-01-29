@@ -2,15 +2,24 @@
 import Link from 'next/link'
 import { useState } from "react";
 import { useFormik } from "formik";
-import type { NextPage } from "next";
-import { Validation } from '../app/login/validation'
+import {useRouter} from 'next/navigation';
+import { Validation } from './login/validation'
 import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import "bootstrap/dist/css/bootstrap.min.css";
+import Success from './responsePopup/success'
 
 
-const Home: NextPage = () => {
+const Home = () => {
   const [submitted, setSubmitted] = useState(false);
+  const [showPopup, setShowPopup] = useState({
+    status: false,
+    message: "",
+    messageDetails: "",
+    statusCode: "",
+
+  })
+
   const [initialValue, setValue] = useState({
     user_type: "",
     email: "",
@@ -18,6 +27,7 @@ const Home: NextPage = () => {
     password: "",
   });
 
+const router = useRouter()
  const formik = useFormik({
     initialValues: initialValue,
 
@@ -31,7 +41,27 @@ const Home: NextPage = () => {
             "content-type": "application/json",
           },
         }
-      );
+      ).then((data) => {
+        setShowPopup(data.status)
+        console.log(data)
+        data.status === 200 ? setShowPopup({
+          status:true,
+          message: "Success, Thankyou",
+          messageDetails: "user created sucessfully",
+          statusCode : 200
+        }) : setShowPopup({
+            status:true,
+            message:"Failed, Sorry",
+            messageDetails:"couldn't create user",
+            statusCode: 400
+            
+        })
+        if(data.status === 200){
+           router.push('/pages')
+        } else {
+          router.push('/')
+        }
+      })
 
       const res = await data.json();
     },
@@ -109,6 +139,7 @@ const Home: NextPage = () => {
         Already have an account? <Link href ="/pages" className = "btn btn-primary ">Click here to Login <ArrowForwardIcon /></Link>
           
       </form>
+      {showPopup.status && <Success showPopup = {showPopup} setShowPopup={setShowPopup}/>}
     </div>
   );
 }; 

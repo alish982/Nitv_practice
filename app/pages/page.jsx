@@ -4,16 +4,24 @@ import { useState } from "react";
 import Link from 'next/link';
 import {useRouter} from 'next/navigation';
 import { useFormik } from "formik";
-import type { NextPage } from "next";
 import "bootstrap/dist/css/bootstrap.min.css";
 import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import { red } from '@mui/material/colors';
+import Success from '../responsePopup/success'
 
 
-const Home: NextPage = () => {
+const Home = () => {
   const [message, setMessage] = useState(""); // This will be used to show a message if the submission is successful
   const [submitted, setSubmitted] = useState(false);
+  const [showPopup, setShowPopup] = useState({
+    status: false,
+    message: "",
+    messageDetails: "",
+    statusCode: "",
+
+  })
+
   const [initialValue, setValue] = useState({
     username: "",
     password: "",
@@ -37,10 +45,29 @@ const Home: NextPage = () => {
           body: formData,
           
         }
-      )
+      ).then((response) => {
+        setShowPopup(response.status)
+        console.log(response)
+        response.status === 200 ? setShowPopup({
+          status:true,
+          message: "Success, Thankyou",
+          messageDetails: "user created sucessfully",
+          statusCode : 200
+        }) : setShowPopup({
+            status:true,
+            message:"Failed, Sorry",
+            messageDetails:"wrong credentials",
+            statusCode: 400
+            
+        })
+        if(response.status === 200){
+           router.push('/Component')
+        } else {
+          router.push('/pages')
+        }
+      })
       
-      router.push('/Component')
-
+      
       const res = await data.json();
       //console.log(res);
     
@@ -49,7 +76,6 @@ const Home: NextPage = () => {
 
       setMessage(" ");
       setSubmitted(true);
-
     },
   });
 
@@ -98,8 +124,8 @@ const Home: NextPage = () => {
           Login <LoginRoundedIcon />
         </button><br></br><br></br>
         <Link href ="/" className = "btn btn-primary"><ArrowBackRoundedIcon sx={{ color: red[500] }} />Back to Register</Link>
-
       </form>
+      {showPopup.status && <Success showPopup = {showPopup} setShowPopup={setShowPopup}/>}
 </div>
 
   );
