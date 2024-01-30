@@ -4,8 +4,8 @@ import axios from 'axios';
 import { access_token } from '../../localStorage'
 import { useFormik } from "formik";
 import "bootstrap/dist/css/bootstrap.min.css";
-
-
+import Success from '../../responsePopup/success'
+import {useRouter} from 'next/navigation';
 
 function Page({ params }) {
   // const [plan, setPlan] = useState([]) //{'plan' : 'h'}
@@ -14,6 +14,14 @@ function Page({ params }) {
     email: "",
     name: "",
     company: "",
+  })
+  
+  const [showPopup, setShowPopup] = useState({
+    status: false,
+    message: "",
+    messageDetails: "",
+    statusCode: "",
+
   });
 
   const test_it = async () => {
@@ -25,7 +33,8 @@ function Page({ params }) {
         console.log(response.data.data)
       setInitialValue(response.data.data)     
   }
- 
+
+ const router = useRouter()
  const formik = useFormik({
     
     initialValues: initialValue,
@@ -38,7 +47,27 @@ function Page({ params }) {
           'Authorization': `Bearer ${access_token}`,
           }
         }
-      );
+      ).then((data) => {
+        setShowPopup(data.status)
+        console.log(data)
+        data.status === 200 ? setShowPopup({
+          status:true,
+          message: "Success, Thankyou",
+          messageDetails: "user updated sucessfully",
+          statusCode : 200
+        }) : setShowPopup({
+            status:true,
+            message:"Failed, Sorry",
+            messageDetails:"couldn't update user",
+            statusCode: 400
+            
+        })
+        if(data.status === 200){
+           router.push('/user')
+        } else {
+          router.push('')
+        }
+      });
       console.log(data.data)
     },
 
@@ -110,7 +139,6 @@ function Page({ params }) {
             className="form-control"
             placeholder=""
             value={initialValue.email}
-            //onChange={formik.handleChange}
             onChange={(newVal) => {
               console.log(newVal.target.value)
               formik.setFieldValue('email',newVal.target.value)
@@ -119,8 +147,6 @@ function Page({ params }) {
                 return currVal
                
               })
-             
-              //console.log(newVal.target.value);
             }}
             onBlur={formik.handleBlur}
           />
@@ -157,9 +183,8 @@ function Page({ params }) {
         <button type="submit" className="btn btn-primary">
         Update 
         </button><br></br>
-       
-          
       </form>
+      {showPopup.status && <Success showPopup = {showPopup} setShowPopup={setShowPopup}/>}
     </div>
       </>
     )

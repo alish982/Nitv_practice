@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import {useRouter} from 'next/navigation';
 import { Validation } from './login/validation'
@@ -25,6 +25,8 @@ const Home = () => {
     email: "",
     name: "",
     password: "",
+    company: "",
+    phone: "",
   });
 
 const router = useRouter()
@@ -67,7 +69,16 @@ const router = useRouter()
     },
 
   });
+
   {Validation}
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+    setShowPopup(false);
+  }, 3000);
+return () => clearTimeout(timer);
+}, [showPopup]);
+
   return (
     
     <div className="vh-100 d-flex flex-column justify-content-center align-items-center">
@@ -132,6 +143,41 @@ const router = useRouter()
             <div className="text-danger">{formik.errors.email}</div>
           )}
         </div>
+
+        <div className="mb-3">
+          <label htmlFor="company" className="form-label">
+            Company
+          </label>
+
+          <input
+            type="text"
+            name="company"
+            className="form-control"
+            placeholder=""
+            value={formik.values.company}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.errors.company && (
+            <div className="text-danger">{formik.errors.company}</div>
+          )}
+        </div>
+
+        <div className="mb-3">
+          <label htmlFor="phone" className="form-label">
+            phone
+          </label>
+
+          <input
+            type="number"
+            name="phone"
+            className="form-control"
+            placeholder=""
+            value={formik.values.phone}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+          />
+          </div>
         
         <button type="submit" className="btn btn-primary">
         Register < LoginRoundedIcon/>

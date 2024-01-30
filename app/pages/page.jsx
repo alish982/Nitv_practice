@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from 'next/link';
 import {useRouter} from 'next/navigation';
 import { useFormik } from "formik";
@@ -51,12 +51,12 @@ const Home = () => {
         response.status === 200 ? setShowPopup({
           status:true,
           message: "Success, Thankyou",
-          messageDetails: "user created sucessfully",
+          messageDetails: "LoggdIn sucessfully",
           statusCode : 200
         }) : setShowPopup({
             status:true,
             message:"Failed, Sorry",
-            messageDetails:"wrong credentials",
+            messageDetails:"username or password wrong",
             statusCode: 400
             
         })
@@ -79,6 +79,13 @@ const Home = () => {
     },
   });
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowPopup(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [showPopup])
+
   return (
     <div className="vh-100 d-flex flex-column justify-content-center align-items-center">
         <label htmlFor = "register " className = 'form-label font-bold '>Login</label>
@@ -90,7 +97,7 @@ const Home = () => {
         <div className="mb-3">
         <div className="mb-3">
           <label htmlFor="username" className="form-label">
-            Email or Username
+            Email
           </label>
 
           <input

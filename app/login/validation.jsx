@@ -2,8 +2,11 @@ import React from 'react'
 import * as yup from "yup";
 
 export const Validation = () => {
-    validationSchema: yup.object({
-        name: yup.string().trim().required("Name is required"),
+     yup.object({
+        name: yup
+        .string()
+        .trim()
+        .required("Name is required"),
         email: yup
           .string()
           .email("Must be a valid email")
